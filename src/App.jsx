@@ -1,49 +1,119 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import heroImg from './assets/hero.png'
 import './App.css'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import Home, { NavigationBar } from './pages/home'
-import Article_Creation_Page from './pages/create_article'
-import { Login_Register } from './pages/login_register'
-import { Loading_Window } from './components/window_templates'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchArticles } from './store/slices/articles'
-import { fetchUserInfo } from './store/slices/auth'
-import { Article_Template_Page } from './pages/article_template_page'
 
 function App() {
   const [count, setCount] = useState(0)
-  const d = useDispatch();
-  const {user, token} = useSelector((state) => state.auth);
-  const {articles, loading, currentArticle} = useSelector((state) => state.articles);
-
-  useEffect(() => {
-    if (user && token) {
-      console.log("App.jsx - User is logged in:", user);
-      d(fetchArticles()).unwrap();
-    } else if (!user && token) {
-      console.log("App.jsx - No user found but token exists. Possible session issue.");
-      d(fetchUserInfo(token)).unwrap();
-    }
-  }, [user, token, d])
 
   return (
     <>
-      <BrowserRouter>
-        <Loading_Window />
-        <NavigationBar />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/create_article" element={<Article_Creation_Page/>}></Route>
-        <Route path={`/edit_article/:${currentArticle?.id}`} element={<Article_Creation_Page isEdit={true} article={currentArticle} />}></Route>
-        <Route path='/login' element={<Login_Register loginBool={true} />}></Route>
-        <Route path='/register' element={<Login_Register loginBool={false} />}></Route>
-        {articles.map(article => (
-          <Route key={article.id} path={`/article/${article.id}`} element={
-            <Article_Template_Page article={article} />
-          }></Route>
-        ))}
-      </Routes>
-      </BrowserRouter>
+      <section id="center">
+        <div className="hero">
+          <img src={heroImg} className="base" width="170" height="179" alt="" />
+          <img src={reactLogo} className="framework" alt="React logo" />
+          <img src={viteLogo} className="vite" alt="Vite logo" />
+        </div>
+        <div>
+          <h1>Get started</h1>
+          <p>
+            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+          </p>
+        </div>
+        <button
+          className="counter"
+          onClick={() => setCount((count) => count + 1)}
+        >
+          Count is {count}
+        </button>
+      </section>
+
+      <div className="ticks"></div>
+
+      <section id="next-steps">
+        <div id="docs">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#documentation-icon"></use>
+          </svg>
+          <h2>Documentation</h2>
+          <p>Your questions, answered</p>
+          <ul>
+            <li>
+              <a href="https://vite.dev/" target="_blank">
+                <img className="logo" src={viteLogo} alt="" />
+                Explore Vite
+              </a>
+            </li>
+            <li>
+              <a href="https://react.dev/" target="_blank">
+                <img className="button-icon" src={reactLogo} alt="" />
+                Learn more
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="social">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#social-icon"></use>
+          </svg>
+          <h2>Connect with us</h2>
+          <p>Join the Vite community</p>
+          <ul>
+            <li>
+              <a href="https://github.com/vitejs/vite" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#github-icon"></use>
+                </svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.vite.dev/" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#discord-icon"></use>
+                </svg>
+                Discord
+              </a>
+            </li>
+            <li>
+              <a href="https://x.com/vite_js" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#x-icon"></use>
+                </svg>
+                X.com
+              </a>
+            </li>
+            <li>
+              <a href="https://bsky.app/profile/vite.dev" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#bluesky-icon"></use>
+                </svg>
+                Bluesky
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="ticks"></div>
+      <section id="spacer"></section>
     </>
   )
 }
